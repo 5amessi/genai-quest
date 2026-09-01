@@ -4,6 +4,44 @@ A security-first, production-oriented RAG reference implementation for the Kentr
 
 The default local mode is deterministic and requires no cloud account. Azure AI Search, Azure OpenAI, Entra ID, managed identity, OpenTelemetry/Application Insights, Container Apps, and Bicep mappings are included without claiming that cloud resources were deployed.
 
+## Submission index
+
+This README is the single entry point for the submission. Detailed artifacts remain in focused files and folders so architecture, implementation, evaluation, security, and operational concerns can be reviewed independently without duplicating content.
+
+| Deliverable | Review link | Status |
+|---|---|---|
+| Source code | [`app/`](app/) | Complete and locally verified; publish from a reviewed Git commit/tag |
+| Setup, assumptions, configuration and limitations | [`README.md`](README.md) | Complete |
+| Code-first walkthrough | [`docs/code-walkthrough.md`](docs/code-walkthrough.md) | Complete |
+| Production architecture and security boundaries | [`docs/architecture.md`](docs/architecture.md) | Complete |
+| Editable architecture diagram | [`docs/architecture.mmd`](docs/architecture.mmd) | Complete; render to PNG/PDF before submission if the portal cannot render Mermaid |
+| Threat model and prompt-injection analysis | [`docs/threat-model.md`](docs/threat-model.md) | Complete |
+| Evaluation methodology and conclusions | [`docs/evaluation-report.md`](docs/evaluation-report.md) | Complete |
+| Evaluation dataset, baseline and per-case results | [`evaluation/`](evaluation/) | Complete; 17/17 deterministic cases passing |
+| Automated test suite | [`tests/`](tests/) | Complete; 23/23 tests passing |
+| API documentation | [`docs/api.md`](docs/api.md) | Complete |
+| Postman collection and local environment | [`postman/`](postman/) | Complete |
+| Architecture Decision Records | [`docs/adr/`](docs/adr/) | Complete; four ADRs provided |
+| Azure infrastructure and Search schema | [`infra/`](infra/) | Complete as an unexecuted reference design; not Azure-deployed |
+| CI quality and evaluation gates | [`.github/workflows/ci.yml`](.github/workflows/ci.yml) | Complete |
+| AI Usage Report | [`AI_USAGE_REPORT.md`](AI_USAGE_REPORT.md) | Complete disclosure; candidate review/update required before submission |
+| Technical walkthrough video | Not provided | Intentionally omitted; the written walkthrough and reproducible demo assets do not claim to satisfy the video requirement |
+| Written recording/demo guide | [`docs/walkthrough-script.md`](docs/walkthrough-script.md) | Complete supplementary artifact |
+
+### Recommended reviewer path
+
+1. Read the [code walkthrough](docs/code-walkthrough.md) for the end-to-end request and ingestion flows.
+2. Review the [production architecture](docs/architecture.md), [diagram](docs/architecture.mmd), and [threat model](docs/threat-model.md).
+3. Run the automated tests and deterministic evaluation using the commands below.
+4. Start the local API and exercise the supplied [Postman collection](postman/Kentrick-Knowledge-Platform.postman_collection.json).
+5. Inspect the four [ADRs](docs/adr), [Azure reference infrastructure](infra), and [AI Usage Report](AI_USAGE_REPORT.md).
+
+### Evidence level
+
+- The local deterministic application, tests, evaluation, API examples, package build, and JSON assets were executed or validated during preparation.
+- The Azure adapters, Bicep, private-network design, managed-identity/RBAC model, and Search schema are production mappings; no Azure deployment is claimed.
+- The required technical video is not included. The omission should remain explicit in any submission email or portal entry.
+
 ## Quick start
 
 Prerequisites: Python 3.11+ (3.12 used in CI) or Docker.
@@ -90,7 +128,7 @@ The production worker adds Blob quarantine, malware/safe parsing, a Service Bus 
 | 9. Azure production design | Diagram, trust boundaries, secure Bicep, Search schema, Entra, managed identity/RBAC, private endpoints, Key Vault, scaling, CI/CD, rollback, versioning and residency considerations |
 | ADRs | Four records under [`docs/adr`](docs/adr), including hybrid retrieval, structure-aware chunking, deterministic workflow and Azure Search |
 | API collection | Postman v2.1 collection + local environment under [`postman`](postman) |
-| Technical walkthrough | Timed 18.5-minute recording script in [`docs/walkthrough-script.md`](docs/walkthrough-script.md) |
+| Technical walkthrough | Written code walkthrough and timed recording script are provided; the required video is explicitly not included |
 | AI usage policy | Honest disclosure, prompts, AI-generated areas and verification steps in [`AI_USAGE_REPORT.md`](AI_USAGE_REPORT.md) |
 
 ## Testing and evaluation
@@ -144,7 +182,7 @@ For Azure mode, install `.[azure,observability]`, provision the resources, creat
 - The local index is process memory. Production needs the documented durable queue/ledger/source-of-truth and inactive-first activation protocol.
 - Token counting and cost are estimates; production should use provider usage and approved price/version tables.
 - The Bicep is a reference baseline and has not been deployed here. Entra registration, APIM/WAF, DNS, RBAC review, model deployment, policy assignments, budgets and residency approval remain deployment work.
-- The actual 15–20 minute video must be recorded by the candidate. The script is complete, but submitting an AI-generated video would undermine the technical-ownership requirement.
+- The required 15–20 minute technical video is not provided. The written walkthrough, Postman collection, evaluation evidence, and recording script are supplementary and do not claim to replace it.
 
 ## Repository map
 

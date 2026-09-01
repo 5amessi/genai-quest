@@ -50,7 +50,7 @@ Result snapshot on 2026-09-01:
 | Citation correctness | 1.000 |
 | Groundedness proxy | 1.000 |
 | Behavior/refusal/security pass | 1.000 / 1.000 / 1.000 |
-| Mean / p95 local latency | 0.765 ms / 1.795 ms |
+| Mean / p95 local latency | Under 1 ms / under 2 ms in the checked-in local run; see `evaluation/results.json` for exact values |
 | Mean estimated tokens | 101 |
 | Mean / total estimated cost | USD 0.00002391 / USD 0.0004065 |
 
