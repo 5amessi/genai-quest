@@ -1,0 +1,79 @@
+flowchart LR
+    %% Trust boundaries are explicit deployment/security boundaries, not merely visual groups.
+    subgraph TB0["TB0 — User devices / untrusted network"]
+        User[Employee client]
+        Publisher[Authorized document publisher]
+    end
+
+    subgraph TB1["TB1 — Identity and protected edge"]
+        Entra[Microsoft Entra ID]
+        APIM[Azure API Management<br/>JWT validation · quotas · WAF policy]
+    end
+
+    subgraph TB2["TB2 — Private Container Apps environment / application trust zone"]
+        API[FastAPI query service<br/>deterministic guarded RAG]
+        Worker[Container Apps ingestion job<br/>parse · normalize · chunk · embed]
+        Principal[Claims → principal policy<br/>tenant · object ID · groups · roles]
+        Guard[Evidence and output guard<br/>citation validation · refusal]
+        OTel[OpenTelemetry collector<br/>redaction and sampling]
+    end
+
+    subgraph TB3["TB3 — Private-link Azure data and AI services"]
+        Blob[(Blob Storage<br/>quarantine · source · normalized)]
+        Bus[Service Bus<br/>ingestion queue + DLQ]
+        Ledger[(Storage Table<br/>idempotency ledger)]
+        Search[(Azure AI Search<br/>hybrid index + ACL metadata)]
+        AOAI[Azure OpenAI / AI Foundry<br/>embeddings + generation]
+        KV[Key Vault<br/>residual secrets and certificates]
+        AppI[Application Insights / Azure Monitor<br/>sanitized traces · metrics · alerts]
+    end
+
+    EventGrid[Azure Event Grid]
+    CICD[GitHub Actions / Azure DevOps<br/>OIDC federation · signed image]
+    ACR[Azure Container Registry]
+
+    User -->|1. OIDC sign-in| Entra
+    Entra -->|2. access token| User
+    User -->|3. HTTPS + bearer token| APIM
+    APIM -->|4. validated token + correlation ID| API
+    API --> Principal
+    Principal -->|5. server-built tenant + ACL filter| API
+    API -->|6. hybrid query; vectorFilterMode=preFilter| Search
+    Search -->|7. authorized candidates only| API
+    API -->|8. delimited untrusted evidence; no tools| AOAI
+    AOAI -->|9. structured answer + citation IDs| Guard
+    API --> Guard
+    Guard -->|10. grounded answer or refusal| APIM
+    APIM --> User
+
+    Publisher -->|A. approved upload| Blob
+    Blob -->|B. object-created event| EventGrid
+    EventGrid -->|C. managed-identity delivery| Bus
+    Bus -->|D. at-least-once message| Worker
+    Worker -->|E. conditional claim / state| Ledger
+    Worker -->|F. read quarantined object| Blob
+    Worker -->|G. embedding batch| AOAI
+    Worker -->|H. inactive chunks then safe activation| Search
+    Worker -->|I. normalized artifact / processing status| Blob
+    Worker -->|J. retry exhaustion| Bus
+
+    API -.->|managed identity| KV
+    Worker -.->|managed identity| KV
+    API -.->|sanitized spans and metrics| OTel
+    Worker -.->|sanitized spans and metrics| OTel
+    OTel -.-> AppI
+
+    CICD -->|build, scan, sign| ACR
+    ACR -->|immutable image digest; revision rollout| API
+    ACR -->|immutable image digest| Worker
+
+    classDef identity fill:#e8f1ff,stroke:#1d4ed8,color:#111;
+    classDef compute fill:#ecfdf5,stroke:#047857,color:#111;
+    classDef data fill:#fff7ed,stroke:#c2410c,color:#111;
+    classDef untrusted fill:#fef2f2,stroke:#b91c1c,color:#111;
+    classDef ops fill:#f5f3ff,stroke:#6d28d9,color:#111;
+    class User,Publisher untrusted;
+    class Entra,APIM identity;
+    class API,Worker,Principal,Guard,OTel compute;
+    class Blob,Bus,Ledger,Search,AOAI,KV,AppI data;
+    class EventGrid,CICD,ACR ops;

@@ -1,0 +1,59 @@
+{
+  "name": "knowledge-chunks-v1",
+  "fields": [
+    {"name": "chunk_id", "type": "Edm.String", "key": true, "filterable": true, "retrievable": true},
+    {"name": "document_id", "type": "Edm.String", "filterable": true, "sortable": true, "retrievable": true},
+    {"name": "canonical_id", "type": "Edm.String", "filterable": true, "sortable": true, "retrievable": true},
+    {"name": "title", "type": "Edm.String", "searchable": true, "retrievable": true},
+    {"name": "content", "type": "Edm.String", "searchable": true, "retrievable": true},
+    {"name": "heading", "type": "Edm.String", "searchable": true, "filterable": true, "retrievable": true},
+    {"name": "ordinal", "type": "Edm.Int32", "filterable": true, "sortable": true, "retrievable": true},
+    {"name": "token_count", "type": "Edm.Int32", "filterable": true, "retrievable": true},
+    {"name": "department", "type": "Edm.String", "filterable": true, "facetable": true, "retrievable": true},
+    {"name": "allowed_groups", "type": "Collection(Edm.String)", "filterable": true, "retrievable": true},
+    {"name": "classification", "type": "Edm.String", "filterable": true, "facetable": true, "retrievable": true},
+    {"name": "version", "type": "Edm.Int32", "filterable": true, "sortable": true, "retrievable": true},
+    {"name": "effective_from", "type": "Edm.DateTimeOffset", "filterable": true, "sortable": true, "retrievable": true},
+    {"name": "source_uri", "type": "Edm.String", "retrievable": true},
+    {"name": "is_current", "type": "Edm.Boolean", "filterable": true, "retrievable": true},
+    {"name": "checksum", "type": "Edm.String", "filterable": true, "retrievable": true},
+    {"name": "metadata_json", "type": "Edm.String", "retrievable": true},
+    {"name": "risk_flags", "type": "Collection(Edm.String)", "filterable": true, "retrievable": true},
+    {
+      "name": "content_vector",
+      "type": "Collection(Edm.Single)",
+      "searchable": true,
+      "retrievable": false,
+      "dimensions": 1536,
+      "vectorSearchProfile": "knowledge-vector-profile"
+    }
+  ],
+  "vectorSearch": {
+    "algorithms": [
+      {
+        "name": "knowledge-hnsw",
+        "kind": "hnsw",
+        "hnswParameters": {"m": 4, "efConstruction": 400, "efSearch": 500, "metric": "cosine"}
+      }
+    ],
+    "profiles": [
+      {"name": "knowledge-vector-profile", "algorithm": "knowledge-hnsw"}
+    ]
+  },
+  "semantic": {
+    "configurations": [
+      {
+        "name": "knowledge-semantic",
+        "prioritizedFields": {
+          "titleField": {"fieldName": "title"},
+          "prioritizedContentFields": [
+            {"fieldName": "heading"},
+            {"fieldName": "content"}
+          ],
+          "prioritizedKeywordsFields": []
+        }
+      }
+    ]
+  }
+}
+

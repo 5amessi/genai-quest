@@ -1,0 +1,45 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "workloadName": {
+      "value": "kentrick-kp"
+    },
+    "location": {
+      "value": "swedencentral"
+    },
+    "environmentName": {
+      "value": "dev"
+    },
+    "containerImage": {
+      "value": "REPLACE_WITH_REGISTRY/kentrick-knowledge-platform@sha256:REPLACE_WITH_DIGEST"
+    },
+    "entraClientId": {
+      "value": "00000000-0000-0000-0000-000000000000"
+    },
+    "chatDeploymentName": {
+      "value": "REPLACE_WITH_CHAT_DEPLOYMENT"
+    },
+    "embeddingDeploymentName": {
+      "value": "REPLACE_WITH_EMBEDDING_DEPLOYMENT"
+    },
+    "allowPublicApi": {
+      "value": false
+    },
+    "minReplicas": {
+      "value": 1
+    },
+    "maxReplicas": {
+      "value": 10
+    },
+    "tags": {
+      "value": {
+        "workload": "enterprise-knowledge-platform",
+        "environment": "dev",
+        "managedBy": "bicep",
+        "dataClassification": "internal",
+        "owner": "REPLACE_ME"
+      }
+    }
+  }
+}

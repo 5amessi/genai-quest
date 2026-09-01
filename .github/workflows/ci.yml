@@ -1,0 +1,75 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: pyproject.toml
+
+      - name: Install dependencies
+        run: python -m pip install --editable ".[dev]"
+
+      - name: Compile source
+        run: python -m compileall -q app tests scripts
+
+      - name: Lint
+        run: ruff check app tests scripts
+
+      - name: Run unit and integration tests
+        run: python -m pytest -q
+
+      - name: Validate JSON deliverables
+        run: |
+          python -m json.tool postman/Kentrick-Knowledge-Platform.postman_collection.json > /dev/null
+          python -m json.tool postman/local.postman_environment.json > /dev/null
+          python -m json.tool infra/main.parameters.example.json > /dev/null
+
+      - name: Run deterministic evaluation regression gate
+        run: >-
+          python scripts/evaluate.py
+          --dataset evaluation/dataset.jsonl
+          --baseline evaluation/baseline-results.json
+          --output evaluation/results-ci.json
+          --fail-on-regression
+
+  container:
+    needs: test
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build container without publishing
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: false
+          tags: kentrick-knowledge-platform:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

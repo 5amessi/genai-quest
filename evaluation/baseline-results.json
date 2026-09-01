@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0",
+  "snapshot_kind": "reviewed_deterministic_local_baseline",
+  "generated_at": "2026-09-01T00:27:28.472180+00:00",
+  "dataset_sha256": "6218a78de76b623e3958609d68eef838ca4f4c4e3c91d10ea002bc90edd1e56d",
+  "note": "Local deterministic baseline only; latency and cost are not Azure production measurements.",
+  "thresholds": {
+    "case_pass_rate": {"operator": ">=", "value": 0.9},
+    "retrieval_recall_at_k": {"operator": ">=", "value": 0.9},
+    "answer_correctness": {"operator": ">=", "value": 0.9},
+    "citation_correctness": {"operator": ">=", "value": 0.9},
+    "groundedness_proxy": {"operator": ">=", "value": 0.9},
+    "behavior_pass_rate": {"operator": ">=", "value": 0.95},
+    "refusal_pass_rate": {"operator": ">=", "value": 1.0},
+    "security_pass_rate": {"operator": ">=", "value": 1.0},
+    "p95_latency_ms": {"operator": "<=", "value": 500.0},
+    "mean_total_tokens": {"operator": "<=", "value": 400.0},
+    "mean_estimated_cost_usd": {"operator": "<=", "value": 0.001}
+  },
+  "regression_tolerances": {
+    "case_pass_rate": {"direction": "higher", "absolute": 0.0},
+    "retrieval_recall_at_k": {"direction": "higher", "absolute": 0.05},
+    "answer_correctness": {"direction": "higher", "absolute": 0.05},
+    "citation_correctness": {"direction": "higher", "absolute": 0.05},
+    "groundedness_proxy": {"direction": "higher", "absolute": 0.05},
+    "refusal_pass_rate": {"direction": "higher", "absolute": 0.0},
+    "security_pass_rate": {"direction": "higher", "absolute": 0.0}
+  },
+  "aggregates": {
+    "total_cases": 17,
+    "passed_cases": 17,
+    "case_pass_rate": 1.0,
+    "retrieval_recall_at_k": 1.0,
+    "answer_correctness": 1.0,
+    "citation_correctness": 1.0,
+    "groundedness_proxy": 1.0,
+    "behavior_pass_rate": 1.0,
+    "refusal_pass_rate": 1.0,
+    "clarification_pass_rate": 1.0,
+    "security_pass_rate": 1.0,
+    "p95_latency_ms": 0.9466,
+    "mean_total_tokens": 101.0,
+    "mean_estimated_cost_usd": 0.000023911764705882352
+  }
+}
+

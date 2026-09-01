@@ -1,0 +1,104 @@
+[
+  {
+    "document_id": "vendor-policy",
+    "canonical_id": "vendor-policy",
+    "file": "vendor-policy-v1.md",
+    "title": "Enterprise Vendor Approval Policy",
+    "department": "Operations",
+    "allowed_groups": ["company-all"],
+    "classification": "internal",
+    "version": 1,
+    "effective_from": "2024-03-01",
+    "source_uri": "https://knowledge.example/policies/vendor-approval?v=1",
+    "metadata": {
+      "status": "superseded",
+      "conflict_key": "vendor-final-approver",
+      "assertion": "CFO above USD 50,000",
+      "authority_rank": 100
+    }
+  },
+  {
+    "document_id": "vendor-policy",
+    "canonical_id": "vendor-policy",
+    "file": "vendor-policy-v2.md",
+    "title": "Enterprise Vendor Approval Policy",
+    "department": "Operations",
+    "allowed_groups": ["company-all"],
+    "classification": "internal",
+    "version": 2,
+    "effective_from": "2026-01-15",
+    "source_uri": "https://knowledge.example/policies/vendor-approval?v=2",
+    "metadata": {
+      "status": "current",
+      "conflict_key": "vendor-final-approver",
+      "assertion": "Procurement Director",
+      "authority_rank": 100
+    }
+  },
+  {
+    "document_id": "engineering-runbook",
+    "file": "engineering-runbook.md",
+    "title": "Deployment Recovery Runbook",
+    "department": "Engineering",
+    "allowed_groups": ["engineering"],
+    "classification": "internal",
+    "version": 3,
+    "effective_from": "2026-04-10",
+    "source_uri": "https://knowledge.example/engineering/deployment-recovery",
+    "metadata": {"status": "current", "owner": "SRE"}
+  },
+  {
+    "document_id": "hr-compensation",
+    "file": "hr-compensation.md",
+    "title": "Compensation Administration Standard",
+    "department": "HR",
+    "allowed_groups": ["hr"],
+    "classification": "confidential",
+    "version": 4,
+    "effective_from": "2026-02-01",
+    "source_uri": "https://knowledge.example/hr/compensation",
+    "metadata": {"status": "current", "owner": "HR Director"}
+  },
+  {
+    "document_id": "legal-merger",
+    "file": "legal-merger.md",
+    "title": "Project Atlas Transaction Brief",
+    "department": "Legal",
+    "allowed_groups": ["legal"],
+    "classification": "restricted",
+    "version": 1,
+    "effective_from": "2026-08-20",
+    "source_uri": "https://knowledge.example/legal/project-atlas",
+    "metadata": {"status": "current", "privileged": true}
+  },
+  {
+    "document_id": "vendor-exception-memo",
+    "file": "vendor-exception-memo.md",
+    "title": "Emergency Vendor Exception Memo",
+    "department": "Finance",
+    "allowed_groups": ["finance"],
+    "classification": "confidential",
+    "version": 1,
+    "effective_from": "2026-06-01",
+    "source_uri": "https://knowledge.example/finance/emergency-vendor",
+    "metadata": {
+      "status": "current",
+      "conflict_key": "vendor-final-approver",
+      "assertion": "CFO",
+      "authority_rank": 100
+    }
+  },
+  {
+    "document_id": "malicious-handbook",
+    "file": "malicious-handbook.md",
+    "title": "Untrusted Employee Handbook Addendum",
+    "department": "Operations",
+    "allowed_groups": ["company-all"],
+    "classification": "internal",
+    "version": 1,
+    "effective_from": "2026-07-01",
+    "source_uri": "https://knowledge.example/handbook/untrusted-addendum",
+    "metadata": {"status": "quarantined-review"}
+  }
+]
+

@@ -1,0 +1,32 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: kentrick-knowledge-platform:local
+    environment:
+      APP_ENV: local
+      LOG_LEVEL: INFO
+      AUTH_MODE: demo
+      BACKEND: local
+      ALLOW_FAILURE_INJECTION: "true"
+    ports:
+      - "8000:8000"
+    init: true
+    read_only: true
+    tmpfs:
+      - /tmp:size=64m,mode=1777
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health/ready', timeout=2)"
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
